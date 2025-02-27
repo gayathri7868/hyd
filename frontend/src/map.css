@@ -1,0 +1,26 @@
+/* marker.css */
+.custom-marker {
+    width: 40px;
+    /* Adjust size */
+    height: 40px;
+    /* Adjust size */
+    background-color: rgba(0, 123, 255, 0.5);
+    /* Set background color */
+    border: 2px solid #007bff;
+    /* Border around the marker */
+    border-radius: 50%;
+    /* Round the marker */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 14px;
+}
+
+.custom-marker-shadow {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.2);
+    /* Shadow effect */
+    border-radius: 50%;
+}
