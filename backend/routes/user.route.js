@@ -91,49 +91,100 @@ routes.get('/intermediate/:sid/:eid', async (req, res) => {
 })
 
 
+// routes.get('/indirect/:sid/:eid', async (req, res) => {
+//     const sid = req.params.sid
+//     const eid = req.params.eid
+//     try {
+
+//         const start = await routeModel.find({ intermediateStops: sid });
+//         const end = await routeModel.find({ intermediateStops: eid });
+
+//         // console.log(start);
+//         let connectingRoutes = []
+//         for (let startRoute of start) {
+//             for (let endRoute of end) {
+//                 // console.log(startRoute)
+//                 //console.log(startRoute.number + " " + endRoute.number + " &&");
+//                 if (startRoute.number != endRoute.number) {
+//                     const commonStops = startRoute.intermediateStops.filter(stop =>
+//                         endRoute.intermediateStops.includes(stop)
+//                     );
+//                     //console.log(commonStops + " ^^")
+//                     if (commonStops.length > 0) {
+//                         connectingRoutes.push({
+//                             start: startRoute.number,
+//                             end: endRoute.number,
+//                             commonStops: commonStops[0]
+
+//                         })
+//                     }
+//                 }
+//             }
+//         }
+//         if (connectingRoutes.length > 0) {
+//             console.log(connectingRoutes)
+//             res.status(200).json(connectingRoutes);
+//         }
+//         else {
+//             res.status(400).json(`cannot find the direct routes`);
+//         }
+
+//     }
+//     catch (err) {
+//         res.status(404).json(`internal server error`);
+//     }
+// })
+
 routes.get('/indirect/:sid/:eid', async (req, res) => {
-    const sid = req.params.sid
-    const eid = req.params.eid
+    const sid = req.params.sid;
+    const eid = req.params.eid;
+  
     try {
-
-        const start = await routeModel.find({ intermediateStops: sid });
-        const end = await routeModel.find({ intermediateStops: eid });
-
-        // console.log(start);
-        let connectingRoutes = []
-        for (let startRoute of start) {
-            for (let endRoute of end) {
-                // console.log(startRoute)
-                //console.log(startRoute.number + " " + endRoute.number + " &&");
-                if (startRoute.number != endRoute.number) {
-                    const commonStops = startRoute.intermediateStops.filter(stop =>
-                        endRoute.intermediateStops.includes(stop)
-                    );
-                    //console.log(commonStops + " ^^")
-                    if (commonStops.length > 0) {
-                        connectingRoutes.push({
-                            start: startRoute.number,
-                            end: endRoute.number,
-                            commonStops: commonStops[0]
-
-                        })
-                    }
-                }
+      const start = await routeModel.find({
+        $or: [
+          { startLocation: sid },
+          { endLocation: sid },
+          { intermediateStops: sid }
+        ]
+      });
+  
+      const end = await routeModel.find({
+        $or: [
+          { startLocation: eid },
+          { endLocation: eid },
+          { intermediateStops: eid }
+        ]
+      });
+  
+      let connectingRoutes = [];
+      for (let startRoute of start) {
+        for (let endRoute of end) {
+          if (startRoute.number !== endRoute.number) {
+            const commonStops = startRoute.intermediateStops.filter(stop =>
+              endRoute.intermediateStops.includes(stop)
+            );
+            if (commonStops.length > 0) {
+              connectingRoutes.push({
+                start: startRoute.number,
+                end: endRoute.number,
+                commonStops: commonStops[0],
+              });
             }
+          }
         }
-        if (connectingRoutes.length > 0) {
-            console.log(connectingRoutes)
-            res.status(200).json(connectingRoutes);
-        }
-        else {
-            res.status(400).json(`cannot find the direct routes`);
-        }
-
+      }
+  
+      if (connectingRoutes.length > 0) {
+        res.status(200).json(connectingRoutes);
+      } else {
+        res.status(200).json([]); 
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json("Internal server error");
     }
-    catch (err) {
-        res.status(404).json(`internal server error`);
-    }
-})
+  });
+  
 
 
 routes.get('/', async (req, res) => {

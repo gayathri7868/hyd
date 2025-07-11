@@ -1,104 +1,9 @@
-// import { useNavigate, useLocation } from "react-router-dom";
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-// import '../explore.css';
-
-// function Explore() {
-
-//     const loc = useLocation();
-//     const { stopName: stop } = loc.state || {};
-//     const navigate = useNavigate();
-//     const [stopName, setStopName] = useState(stop || '');
-//     const [routes, setRoutes] = useState([]);
-
-//     //console.log(stopName)
-
-//     const fetchStop = async (id) => {
-//         try {
-//             return (await axios.get(`http://localhost:2000/api/stops/id/${id}`)).data.name;
-//         }
-//         catch (err) {
-//             console.log(err)
-//             return;
-//         }
-//     }
-
-
-//     const handleStop = async (event) => {
-//         if (event) event.preventDefault();
-//         try {
-//             const s = stopName.toUpperCase();
-//             setStopName(s);
-//             const r = await axios.get(`http://localhost:2000/api/stops/name/${s}`);
-//             const sId = r.data._id;
-
-//             console.log(sId + "**");
-//             const routeStop = await axios.get(`http://localhost:2000/api/users/rt/${sId}`);
-//             if (routeStop.status == 200) {
-//                 const updatedRoutes = await Promise.all(routeStop.data.map(async (route) => {
-//                     const startName = await fetchStop(route.startLocation);
-//                     const endName = await fetchStop(route.endLocation);
-//                     return { ...route, startLocation: startName, endLocation: endName };
-//                 }));
-//                 setRoutes(updatedRoutes);
-//             }
-//             //setRoutes(routeStop.data);
-//         }
-//         catch (err) {
-//             console.log(err);
-//         }
-//         //setRoutes(example);
-//     };
-
-//     useEffect(() => {
-//         handleStop();
-//     }, [])
-
-//     return (<div className="align">
-//         {routes.length > 0 && routes.map((route, index) => (
-//             <center>
-
-//                 <div key={index} className="container">
-//                     <p className="number">{route.number}</p>
-//                     <div className="image">
-//                         <img src="/bus1.png" alt="bus"></img>
-//                     </div>
-//                     <div className="start">
-//                         <div className="icon">
-//                             <img src="/red.png" alt="pin"></img>
-//                         </div>
-//                         <p className="place" >
-//                             {route.startLocation}
-//                         </p>
-//                     </div>
-//                     <div className="dir">
-//                         <img src="/dir1.png" alt="dir"></img>
-//                     </div>
-//                     <div className="start">
-//                         <div className="icon">
-//                             <img src="/red.png" alt="pin"></img>
-//                         </div>
-//                         <p className="place" >
-//                             {route.endLocation}
-//                         </p>
-//                     </div>
-//                 </div>
-//             </center>
-//         ))}
-
-
-
-//     </div>
-//     );
-// }
-
-// export default Explore;
 
 
 import { useNavigate, useLocation } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import "bootstrap/dist/css/bootstrap.min.css"; 
 
 function Explore() {
     const loc = useLocation();
@@ -175,7 +80,7 @@ function Explore() {
                 </div>
             ) : (
                 <div className="text-center">
-                    <p className="fs-4 text-muted">No routes available.</p>
+                    <p className="fs-4 text-muted">Loading</p>
                 </div>
             )}
         </div>
