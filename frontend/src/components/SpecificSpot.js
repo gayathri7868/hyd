@@ -925,6 +925,7 @@ import { startCase, toLower } from 'lodash';
 
 const SpecificSpot = () => {
   const location = useLocation();
+  const apiKey = process.env.GOOGLE_API_KEY;
   let spotName = location.state?.spotName || location.state?.query || "No spot selected";
   spotName = startCase(toLower(spotName));
   console.log(spotName)
@@ -1053,10 +1054,10 @@ const SpecificSpot = () => {
         style={styles.mapBackground}
         src={
           startLocation
-            ? `https://www.google.com/maps/embed/v1/directions?key=AIzaSyAqjuHEXUhERkYhHd7zUMD8m6v7bzmxkP0&origin=${encodeURIComponent(
+            ? `https://www.google.com/maps/embed/v1/directions?key=${apiKey}&origin=${encodeURIComponent(
               startLocation
             )}&destination=${encodeURIComponent(spotName)}&mode=transit&maptype=${mapType}`
-            : `https://www.google.com/maps/embed/v1/place?key=AIzaSyAqjuHEXUhERkYhHd7zUMD8m6v7bzmxkP0&q=${encodeURIComponent(
+            : `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${encodeURIComponent(
               spotName
             )}&maptype=${mapType}`
         }

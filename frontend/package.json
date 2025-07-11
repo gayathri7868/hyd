@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
+    "dotenv": "^17.2.0",
     "leaflet": "^1.9.4",
     "leaflet-routing-machine": "^3.2.12",
     "lodash": "^4.17.21",
